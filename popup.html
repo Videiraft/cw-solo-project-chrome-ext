@@ -2,18 +2,26 @@
   <html>
     <head>
       <style>
+        .container {
+          width: 400px;
+        }
       </style>
     </head>
     <body>
+      <!--
       <div class="container">
         <div class="title-container"></div>
         <div>
-          <form>
+          <form id="app-form">
             <label for="tags">Tags: </label>
-            <input type="text" name="tags" />
+            <input type="text" name="tags" placeholder="Separate tags with commas"/> </br>
+            <input type="submit" value="Done">
           </form>
         </div>
       </div>
-      <script src="popup.js"></script>
+      -->
+      <script type="module" src="popup.js"></script>
+      <script type="module" src="viewApp.js"></script>
+      <script type="module" src="viewLogin.js"></script>
     </body>
   </html>
