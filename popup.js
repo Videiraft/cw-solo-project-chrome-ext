@@ -1,10 +1,10 @@
-let title = '';
-let tabURL = '';
-const basicUrl = '127.0.0.1:4000';
 import { appHtml } from './viewApp.js';
 import { loginHtml } from './viewLogin.js';
 
-// check if user is loged in
+let title = '';
+let tabURL = '';
+const basicUrl = 'http://127.0.0.1:4000';
+// TODO: check if user is loged in
 const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI1ZDNhYjg3MmYwMWExMjE1MGQwNjc0ZWUiLCJlbWFpbCI6Im1hcmNvQG1haWwuY29tIiwiaWF0IjoxNTY0MTU3MjI5LCJleHAiOjE1NjQzMzAwMjl9.tuR1QHmqXwLLYhovrUVsxIcfcD6-kdLDeYN-bY59bi8';
 
 document.body.innerHTML = token ? appHtml : loginHtml;
@@ -21,15 +21,16 @@ if (token) {
   
   function submitNewLink (e) {
     e.preventDefault();
-    const url = basicUrl + '/users';
+    const url = basicUrl + '/users/links';
     const tagsStr = document.querySelector('[name="tags"]').value.replace(/\s/g,'');
     const tags = tagsStr.split(',');
   
     const data = { title, url: tabURL, tags };
     fetch(url, {
-      method: 'PATCH',
+      method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token,
       },
       body: JSON.stringify(data),
     })
@@ -37,5 +38,6 @@ if (token) {
       .then(data => console.log(data));
   }
 } else {
-
+  // TODO: Login page
+  console.log('TODO')
 }
