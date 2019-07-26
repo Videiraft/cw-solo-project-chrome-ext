@@ -1,0 +1,1 @@
+# cw-solo-project-chrome-ext
