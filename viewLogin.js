@@ -4,7 +4,7 @@ export const loginHtml = `
       <h1>Login</h1>
     </div>
     <div>
-      <form id="app-form">
+      <form id="login-form">
         <input type="text" name="email" placeholder="Email"/> </br>
         <input type="text" name="password" placeholder="Password"/> </br>
         <input type="submit" value="Log in">
