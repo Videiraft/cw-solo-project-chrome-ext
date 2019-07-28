@@ -3,8 +3,9 @@ export const appHtml = `
   <div class="title-container"></div>
   <div>
     <form id="app-form">
-      <label for="tags">Tags: </label>
-      <input type="text" name="tags" placeholder="Separate tags with commas"/></br>
+      <input list="tags" name="tags" placeholder="Separate tags with commas" autocomplete="off"/></br>
+      <datalist id="tags">
+      </datalist>
       <input type="submit" value="Done">
     </form>
   </div>

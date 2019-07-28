@@ -13,10 +13,11 @@ function init () {
     // render html according to the need of login in or not
     document.body.innerHTML = token ? appHtml : loginHtml;
   
-    // TODO: expiration time for token?
-
     // TODO: Link to the app to create a new User
     // TODO: Permanent Link to the app
+    // TODO: Autocomplete for more than one tag, comma separated
+
+    // TODO: expiration time for token?
   
     // if the user is loged in show app page
     if (token) {
@@ -34,9 +35,32 @@ function init () {
 function appPage (token) {
   let title = '';
   let tabURL = '';
+  const url = basicUrl + '/users/links/tags';
+
   document.getElementById('app-form').addEventListener('submit', handleNewLink);
   document.getElementById('log-out').addEventListener('click', handleLogOut);
+  document.querySelector('[name="tags"]').focus();
 
+  // Fetch tags on server and get tags to autocomplete
+  fetch(url, {
+    method: 'GET',
+    headers: {
+      'Authorization': 'Bearer ' + token,
+    },
+  })
+    .then(res => res.json())
+    .then(tags => {
+      // tagsList = tags;
+      for (let i = 0; i < tags.length; i++) {
+        document.getElementById('tags').insertAdjacentHTML(
+          'beforeend',
+          `<option value=${tags[i]}>`,
+        );
+      }
+    })
+    .catch(err => console.log(err));
+
+  // Get link information (tab)
   chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
     tabURL = tabs[0].url;
     title = tabs[0].title;
@@ -44,6 +68,7 @@ function appPage (token) {
     document.querySelector('.title-container').insertAdjacentHTML('afterbegin', titleHtml);
   });
   
+  // Submit link function
   function handleNewLink (e) {
     e.preventDefault();
     const url = basicUrl + '/users/links';
