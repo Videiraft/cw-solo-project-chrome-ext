@@ -1,9 +1,15 @@
 import { appHtml } from './viewApp.js';
 import { loginHtml } from './viewLogin.js';
 
+// TODO: Green color for successful entries before closing the window
+// TODO: Red color for every error
+// TODO: Link to the app to create a new User
+// TODO: Permanent Link to the app
+// TODO: Autocomplete for more than one tag, comma separated
+// TODO: expiration time for token?
+
 const basicUrl = 'http://127.0.0.1:4000';
 
-// check the if the authToken is expired
 init();
 
 function init () {
@@ -11,14 +17,7 @@ function init () {
   chrome.storage.local.get(['authToken'], function(items) {
     const token = items.authToken
     // render html according to the need of login in or not
-    document.body.innerHTML = token ? appHtml : loginHtml;
-  
-    // TODO: Link to the app to create a new User
-    // TODO: Permanent Link to the app
-    // TODO: Autocomplete for more than one tag, comma separated
-
-    // TODO: expiration time for token?
-  
+    document.body.innerHTML = token ? appHtml : loginHtml;  
     // if the user is loged in show app page
     if (token) {
       appPage(token);
@@ -35,6 +34,7 @@ function init () {
 function appPage (token) {
   let title = '';
   let tabURL = '';
+  let favicon = '';
   const url = basicUrl + '/users/links/tags';
 
   document.getElementById('app-form').addEventListener('submit', handleNewLink);
@@ -50,7 +50,6 @@ function appPage (token) {
   })
     .then(res => res.json())
     .then(tags => {
-      // tagsList = tags;
       for (let i = 0; i < tags.length; i++) {
         document.getElementById('tags').insertAdjacentHTML(
           'beforeend',
@@ -64,6 +63,7 @@ function appPage (token) {
   chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
     tabURL = tabs[0].url;
     title = tabs[0].title;
+    favicon = tabs[0].favIconUrl;
     const titleHtml = `<h1>${title}</h1>`;
     document.querySelector('.title-container').insertAdjacentHTML('afterbegin', titleHtml);
   });
@@ -75,7 +75,7 @@ function appPage (token) {
     const tagsStr = document.querySelector('[name="tags"]').value.replace(/\s/g,'');
     const tags = tagsStr.split(',');
   
-    const data = { title, url: tabURL, tags };
+    const data = { title, url: tabURL, tags, favicon };
     fetch(url, {
       method: 'PUT',
       headers: {
@@ -87,14 +87,20 @@ function appPage (token) {
       .then(response => response.json())
       .then(data => {
         if (data.status === 'fail') {
+          document.getElementById('message-feedback').innerText = '';
           document.getElementById('message-feedback').insertAdjacentText('afterbegin', 'This link already exists.');
         } else {
+          document.getElementById('message-feedback').innerText = '';
           document.getElementById('message-feedback').insertAdjacentText('afterbegin', 'Link was successfully saved!');
+          setTimeout(() => {
+            window.close();
+          }, 1000)
         }
-        console.log(data)
+        console.log(data);
       })
       .catch(err => {
         // Fetch was not possible. Show a message
+        document.getElementById('message-feedback').innerText = '';
         document.getElementById('message-feedback').insertAdjacentText('afterbegin', 'Something went wrong. Please, try again later.');
         // console.log(err)
       });
