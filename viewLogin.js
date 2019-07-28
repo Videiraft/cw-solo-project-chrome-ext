@@ -10,5 +10,8 @@ export const loginHtml = `
         <input type="submit" value="Log in">
       </form>
     </div>
+    <div>
+      <p id="message-feedback"></p>
+    </div>
 </div>
 `;

@@ -11,5 +11,8 @@ export const appHtml = `
   <div>
     <a id="log-out" href="">Log Out</a>
   </div>
+  <div>
+    <p id="message-feedback"></p>
+  </div>
 </div>
 `;
