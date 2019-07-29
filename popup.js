@@ -33,6 +33,7 @@ function init () {
 //
 function appPage (token) {
   let title = '';
+  let description = '';
   let tabURL = '';
   let favicon = '';
   const url = basicUrl + '/users/links/tags';
@@ -66,6 +67,11 @@ function appPage (token) {
     favicon = tabs[0].favIconUrl;
     const titleHtml = `<h1>${title}</h1>`;
     document.querySelector('.title-container').insertAdjacentHTML('afterbegin', titleHtml);
+    chrome.tabs.getSelected(null, function(tab){
+      chrome.tabs.executeScript(tab.id, {file: "./getDescription.js"}, function(response) {
+        description = response[0];
+      });
+    });
   });
   
   // Submit link function
@@ -74,8 +80,8 @@ function appPage (token) {
     const url = basicUrl + '/users/links';
     const tagsStr = document.querySelector('[name="tags"]').value.replace(/\s/g,'');
     const tags = tagsStr.split(',');
-  
-    const data = { title, url: tabURL, tags, favicon };
+    const data = { title, url: tabURL, tags, favicon, description };
+    console.log(data);
     fetch(url, {
       method: 'PUT',
       headers: {
@@ -92,9 +98,9 @@ function appPage (token) {
         } else {
           document.getElementById('message-feedback').innerText = '';
           document.getElementById('message-feedback').insertAdjacentText('afterbegin', 'Link was successfully saved!');
-          setTimeout(() => {
-            window.close();
-          }, 1000)
+          // setTimeout(() => {
+          //   window.close();
+          // }, 1000)
         }
         console.log(data);
       })
