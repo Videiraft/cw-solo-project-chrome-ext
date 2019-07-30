@@ -1,5 +1,6 @@
 function getDescription () {
   let description = document.querySelector('[name="description"]')
+    || document.querySelector('[name="Description"]')
     || document.querySelector('[property="og:description"]')
     || document.querySelector('[name="twitter:description"]')
     || '';

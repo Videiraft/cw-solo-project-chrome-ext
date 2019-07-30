@@ -81,7 +81,6 @@ function appPage (token) {
     const tagsStr = document.querySelector('[name="tags"]').value.replace(/\s/g,'');
     const tags = tagsStr.split(',');
     const data = { title, url: tabURL, tags, favicon, description };
-    console.log(data);
     fetch(url, {
       method: 'PUT',
       headers: {
@@ -98,9 +97,9 @@ function appPage (token) {
         } else {
           document.getElementById('message-feedback').innerText = '';
           document.getElementById('message-feedback').insertAdjacentText('afterbegin', 'Link was successfully saved!');
-          // setTimeout(() => {
-          //   window.close();
-          // }, 1000)
+          setTimeout(() => {
+            window.close();
+          }, 1000)
         }
         console.log(data);
       })
