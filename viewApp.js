@@ -1,5 +1,6 @@
 export const appHtml = `
 <div class="container">
+  <img id="logo"/>
   <div class="title-container"></div>
   <div>
     <form id="app-form">
@@ -10,7 +11,7 @@ export const appHtml = `
     </form>
   </div>
   <div>
-    <a id="log-out" href="">Log Out</a>
+    <a id="log-out" href="#">Log Out</a>
   </div>
   <div>
     <p id="message-feedback"></p>

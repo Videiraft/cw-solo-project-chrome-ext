@@ -21,7 +21,7 @@ function init () {
     // if the user is loged in show app page
     if (token) {
       appPage(token);
-    // If the user is not logged show Login page
+      // If the user is not logged show Login page
     } else {
       loginPage();
     }
@@ -37,10 +37,11 @@ function appPage (token) {
   let tabURL = '';
   let favicon = '';
   const url = basicUrl + '/users/links/tags';
-
+  
   document.getElementById('app-form').addEventListener('submit', handleNewLink);
   document.getElementById('log-out').addEventListener('click', handleLogOut);
   document.querySelector('[name="tags"]').focus();
+  document.getElementById('logo').src = chrome.runtime.getURL('./assets/pin-it.png');
 
   // Fetch tags on server and get tags to autocomplete
   fetch(url, {
@@ -125,6 +126,7 @@ function appPage (token) {
 function loginPage () {
   const url = basicUrl + '/users/login';
   document.getElementById('login-form').addEventListener('submit', handleLogin);
+  document.getElementById('logo').src = chrome.runtime.getURL('./assets/pin-it.png');
 
   function handleLogin (e) {
     e.preventDefault();
