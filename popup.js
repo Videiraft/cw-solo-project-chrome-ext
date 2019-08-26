@@ -6,7 +6,6 @@ import { loginHtml } from './viewLogin.js';
 // TODO: Link to the app to create a new User
 // TODO: Permanent Link to the app
 // TODO: Autocomplete for more than one tag, comma separated
-// TODO: expiration time for token?
 
 const basicUrl = 'http://127.0.0.1:4000';
 
@@ -50,12 +49,13 @@ function appPage (token) {
       'Authorization': 'Bearer ' + token,
     },
   })
-    .then(res => res.json())
-    .then(tags => {
-      for (let i = 0; i < tags.length; i++) {
+    .then(response => response.json())
+    .then(({ status, data }) => {
+      // TODO: if (status === 'fail')
+      for (let i = 0; i < data.tags.length; i++) {
         document.getElementById('tags').insertAdjacentHTML(
           'beforeend',
-          `<option value=${tags[i]}>`,
+          `<option value=${data.tags[i]}>`,
         );
       }
     })
@@ -91,8 +91,8 @@ function appPage (token) {
       body: JSON.stringify(data),
     })
       .then(response => response.json())
-      .then(data => {
-        if (data.status === 'fail') {
+      .then(({ status }) => {
+        if (status === 'fail') {
           document.getElementById('message-feedback').innerText = '';
           document.getElementById('message-feedback').insertAdjacentText('afterbegin', 'This link already exists.');
         } else {
@@ -102,13 +102,11 @@ function appPage (token) {
             window.close();
           }, 1000)
         }
-        console.log(data);
       })
       .catch(err => {
         // Fetch was not possible. Show a message
         document.getElementById('message-feedback').innerText = '';
         document.getElementById('message-feedback').insertAdjacentText('afterbegin', 'Something went wrong. Please, try again later.');
-        // console.log(err)
       });
   }
 
@@ -140,8 +138,8 @@ function loginPage () {
       },
     })
       .then(response => response.json())
-      .then(data => {
-        if (data.status === 'fail') {
+      .then(({ status, data }) => {
+        if (status === 'fail') {
           document.getElementById('message-feedback').insertAdjacentText('afterbegin', 'Email or password are incorrect.');
         } else {
           chrome.storage.local.set({ authToken: data.id_token }, () => {
@@ -152,7 +150,6 @@ function loginPage () {
       .catch(err => {
         // Fetch was not possible. Show a message
         document.getElementById('message-feedback').insertAdjacentText('afterbegin', 'Something went wrong. Please, try again later.');
-        // console.log(err)
       });
   }
 }
