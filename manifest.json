@@ -1,0 +1,19 @@
+{
+  "name": "Pin-it",
+  "version": "1.0",
+  "description": "Save things you are interested on the web and receive them daily in a digestable way.",
+  "manifest_version": 2,
+  "browser_action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "/assets/logo1.png"
+    }
+  },
+  "permissions": [
+    "tabs",
+    "storage",
+    "notifications",
+    "http://*/",
+    "https://*/"
+  ]
+}
